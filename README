@@ -1,0 +1,9 @@
+Not much to see here.
+
+Dependencies:
+
+libjpeg
+opencv
+libpthreads
+
+Compile directions are listed at the top comments in each file.
