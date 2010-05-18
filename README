@@ -4,6 +4,7 @@ Dependencies:
 
 libjpeg
 opencv
-libpthreads
+libpthread
+freeglut
 
 Compile directions are listed at the top comments in each file.
