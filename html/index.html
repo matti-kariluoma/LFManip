@@ -23,7 +23,7 @@
 				x: 0,
 				y: 0,
 				a: 0,
-				magnitude: 10,
+				magnitude: 2.5,
 			}
 			
 		var canvasRenderer = function()
@@ -47,6 +47,8 @@
 				
 				canContext.drawImage(img, center.x - img.width/2 + n*offset.x, center.y - img.height/2 + n*offset.y);
 			}
+			
+			canContext.globalAlpha = 1.0;
 			
 			canContext.fillStyle = "black";
 			canContext.font = "bold 16px Arial";
