@@ -36,36 +36,57 @@
 			}
 		);
 	</script>
+	
+	
+	
 	<script>
-		var canUpdate = function()
+		var canStart = function(renderFn)
 		{
-			var canContext = $('#theCanvas')[0].getContext('2d');
-			var canWidth = $('#theCanvas').attr('width');
-			var canHeight = $('#theCanvas').attr('height');
+			// cross-browser selector from http://stackoverflow.com/questions/5864073/game-loop-requestanimframe-javascript-canvas
+			var requestAnimFrame = (
+				// define this selector function, then immediately call it
+				function() 
+				{
+					return window.requestAnimationFrame
+						|| window.webkitRequestAnimationFrame
+						|| window.mozRequestAnimationFrame
+						|| window.oRequestAnimationFrame
+						|| window.msRequestAnimationFrame
+						|| function(callback, element) 
+							{
+								window.setTimeout(callback, 1000/60);
+							};
+				}
+			)();
+			
+			var canUpdate = function()
+			{
+				renderFn();
+				requestAnimFrame(canUpdate);
+			}
+			
+			// begin the loop
+			canUpdate();
+		}
+	</script>
+	
+	<script>
+		var canContext = $('#theCanvas')[0].getContext('2d');
+		
+		var canRender = function()
+		{	
+			var canWidth = $('#theCanvas').width();
+			var canHeight = $('#theCanvas').height();
+			
+			canContext.clearRect(0, 0, canWidth, canHeight);
 			canContext.fillStyle = "black";
 			canContext.font = "bold 16px Arial";
 			var canText = canWidth+"x"+canHeight;
 			canContext.fillText(canText, 100, 100);
 		}
 		
-		// draw now
-		canUpdate();
-		
-		// cross-browser selector from http://stackoverflow.com/questions/5864073/game-loop-requestanimframe-javascript-canvas
-		var requestAnimFrame = (function() 
-		{
-			return 
-				window.requestAnimationFrame
-				|| window.webkitRequestAnimationFrame
-				|| window.mozRequestAnimationFrame
-				|| window.oRequestAnimationFrame
-				|| window.msRequestAnimationFrame
-				|| 
-					function(callback, element) 
-					{
-						window.setTimeout(callback, 1000/60);
-					};
-		})();
+		// start the animation loop
+		canStart(canRender);
 	</script>
 </body>
 </html>
