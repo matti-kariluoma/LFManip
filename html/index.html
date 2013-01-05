@@ -1,21 +1,71 @@
 <html>
 <head>
 	<title>LFManip</title>
+	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
 </head>
 
 <body>
-	<div id="container">
-		<canvas id="theCanvas" width="620" height="420">
+	<div id="canContainer">
+		<canvas id="theCanvas" height="480" width="800">
 			<p>Your browser doesn't support canvas, or javascript is disabled!</p>
 		</canvas>
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script>
-		var canContext = $('#theCanvas')[0].getContext('2d');
-		var canWidth = $('#theCanvas').attr('width');
-		var canHeight = $('#theCanvas').attr('height');
+		var resizeCanvas = function()
+		{
+			//$('#theCanvas').height($(document).height());
+			$('#theCanvas').width($(document).width());
+		}
+		
+		// resize the canvas now
+		resizeCanvas();
+		
+		// resize the canvas as browser resizes
+		$(
+			function()
+			{
+				$(window).resize(
+					function()
+					{
+						resizeCanvas();
+					}
+				);
+			}
+		);
+	</script>
+	<script>
+		var canUpdate = function()
+		{
+			var canContext = $('#theCanvas')[0].getContext('2d');
+			var canWidth = $('#theCanvas').attr('width');
+			var canHeight = $('#theCanvas').attr('height');
+			canContext.fillStyle = "black";
+			canContext.font = "bold 16px Arial";
+			var canText = canWidth+"x"+canHeight;
+			canContext.fillText(canText, 100, 100);
+		}
+		
+		// draw now
+		canUpdate();
+		
+		// cross-browser selector from http://stackoverflow.com/questions/5864073/game-loop-requestanimframe-javascript-canvas
+		var requestAnimFrame = (function() 
+		{
+			return 
+				window.requestAnimationFrame
+				|| window.webkitRequestAnimationFrame
+				|| window.mozRequestAnimationFrame
+				|| window.oRequestAnimationFrame
+				|| window.msRequestAnimationFrame
+				|| 
+					function(callback, element) 
+					{
+						window.setTimeout(callback, 1000/60);
+					};
+		})();
 	</script>
 </body>
 </html>
