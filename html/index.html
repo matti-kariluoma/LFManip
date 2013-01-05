@@ -44,9 +44,20 @@
       
       offscreen_buffer.width = img.width;
       offscreen_buffer.height = img.height;
-			
 			offContext.drawImage(img, 0, 0);
-			
+			var imgData = offContext.getImageData(0, 0, img.width, img.height);
+			for(var i=0; i<img.height; i++)
+			{
+				for(var j=0; j<img.width; j++)
+				{
+					//var r = imgData.data[((i*(img.width*4)) + (j*4))];
+					//var g = imgData.data[((i*(img.width*4)) + (j*4)) + 1];
+					//var b = imgData.data[((i*(img.width*4)) + (j*4)) + 2];
+					//var a = imgData.data[((i*(img.width*4)) + (j*4)) + 3];
+					imgData.data[((i*(img.width*4)) + (j*4) + 3)] = 127; // a = 0.5
+				}
+			}
+			offContext.putImageData(imgData, 0, 0);
 			
 			canContext.drawImage(offscreen_buffer, center.x - img.width/2 + offset.x, center.y - img.height/2 + offset.y);
 			
@@ -96,14 +107,14 @@
 		
 		var config = {
 				filenames: [
-						'file:///home/matti/Desktop/Shot1/CW.01_MINI0064.JPG',
-						'file:///home/matti/Desktop/Shot1/CW.02_MINI0048.JPG',
-						'file:///home/matti/Desktop/Shot1/CW.03_MINI0022.JPG',
-						'file:///home/matti/Desktop/Shot1/CW.04_MINI0065.JPG',
-						'file:///home/matti/Desktop/Shot1/CW.05_MINI0065.JPG',
-						'file:///home/matti/Desktop/Shot1/CW.06_MINI0063.JPG',
-						'file:///home/matti/Desktop/Shot1/CW.07_MINI0228.JPG',
-						'file:///home/matti/Desktop/Shot1/CW.08_MINI0056.JPG'
+						'Shot1/CW.01_MINI0064.JPG',
+						'Shot1/CW.02_MINI0048.JPG',
+						'Shot1/CW.03_MINI0022.JPG',
+						'Shot1/CW.04_MINI0065.JPG',
+						'Shot1/CW.05_MINI0065.JPG',
+						'Shot1/CW.06_MINI0063.JPG',
+						'Shot1/CW.07_MINI0228.JPG',
+						'Shot1/CW.08_MINI0056.JPG'
 					],
 				render: canvasRenderer,
 				canvas: $('#theCanvas'),
