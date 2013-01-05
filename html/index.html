@@ -38,31 +38,14 @@
       
       canContext.clearRect(0, 0, canWidth, canHeight);
       
-      var offscreen_buffer = document.createElement('canvas');
-      var offContext = offscreen_buffer.getContext('2d');
-      offset.a = 192/lfmanip.numImages();
+      offset.a = 0.8/lfmanip.numImages();
       for (var n=0; n<lfmanip.numImages(); n++)
       {
 				var img = lfmanip.getImage(n);
+
+				canContext.globalAlpha = 1.0 - offset.a * n;
 				
-				offscreen_buffer.width = img.width;
-				offscreen_buffer.height = img.height;
-				offContext.drawImage(img, 0, 0);
-				var imgData = offContext.getImageData(0, 0, img.width, img.height);
-				for(var i=0; i<img.height; i++)
-				{
-					for(var j=0; j<img.width; j++)
-					{
-						//var r = imgData.data[((i*(img.width*4)) + (j*4))];
-						//var g = imgData.data[((i*(img.width*4)) + (j*4)) + 1];
-						//var b = imgData.data[((i*(img.width*4)) + (j*4)) + 2];
-						//var a = imgData.data[((i*(img.width*4)) + (j*4)) + 3];
-						imgData.data[((i*(img.width*4)) + (j*4) + 3)] = 255 - n*offset.a;
-					}
-				}
-				offContext.putImageData(imgData, 0, 0);
-				
-				canContext.drawImage(offscreen_buffer, center.x - img.width/2 + n*offset.x, center.y - img.height/2 + n*offset.y);
+				canContext.drawImage(img, center.x - img.width/2 + n*offset.x, center.y - img.height/2 + n*offset.y);
 			}
 			
 			canContext.fillStyle = "black";
