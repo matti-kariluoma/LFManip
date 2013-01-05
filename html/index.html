@@ -18,22 +18,70 @@
 	<script>
 		var canContext = $('#theCanvas')[0].getContext('2d');
 
-		var canvasRenderer = function()
+		var canvasRenderer = function(imgs)
 		{	
 			var canWidth = $('#theCanvas').width();
 			var canHeight = $('#theCanvas').height();
 			
+			var center = {
+					x: canWidth/2,
+					y: canHeight/2
+				};
+      
 			canContext.clearRect(0, 0, canWidth, canHeight);
+			
+			var img = imgs[0];
+			canContext.drawImage(img, center.x - img.width/2, center.y - img.height/2);
+			
 			canContext.fillStyle = "black";
 			canContext.font = "bold 16px Arial";
 			var canText = canWidth+"x"+canHeight;
-			canContext.fillText(canText, 100, 100);
+			canContext.fillText(canText, 0, 20);
 		}
 		
-		// start the animation loop
 		var config = {};
 		lfmanip.init(config);
-		lfmanip.start(canvasRenderer);
+		
+		var filenames = new Array();
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.01_MINI0064.JPG');
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.02_MINI0048.JPG');
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.03_MINI0022.JPG');
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.04_MINI0065.JPG');
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.05_MINI0065.JPG');
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.06_MINI0063.JPG');
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.07_MINI0228.JPG');
+		filenames.push('file:///home/matti/Desktop/Shot1/CW.08_MINI0056.JPG');
+		
+		var images = new Array();
+		for (var i=0; i<filenames.length; i++)
+		{
+			var image = new Image();
+			image.src = filenames[i];
+			images.push(image);
+		}
+		
+		var start = function()
+		{
+			// start the animation loop
+			lfmanip.start(function() {canvasRenderer(images)});
+		}
+		
+		var loaded = 0;
+		var started = false;
+		for (i=0; i<images.length; i++)
+		{
+			// wait for the images to load before continuing
+			images[i].onload = function()
+			{
+				loaded++;
+				if (loaded >= images.length && !started)
+				{
+					started = true;
+					start();
+				}
+			}
+		}
+
 	</script>
 </body>
 </html>
