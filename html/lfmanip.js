@@ -25,8 +25,12 @@ var lfmanip = {
 	
 	resizeCanvas: function()
 		{
-			//$('#theCanvas').height($(document).height());
-			$('#theCanvas').width($(document).width());
+			var canvas = $('#theCanvas');
+			var width = canvas[0].offsetWidth;
+			var height = canvas[0].offsetHeight;
+			
+			canvas.attr('width', width);
+			canvas.attr('height', height);
 		},
 
 	start: function(renderFn)

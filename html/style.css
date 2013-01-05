@@ -5,4 +5,7 @@ div#canContainer
 canvas#theCanvas
 {
 	border: 1px solid;
+	/* The following cause the canvas to strech. @see lfmanip.resizeCanvas() */
+	height: 100%;
+	width: 100%;
 }
