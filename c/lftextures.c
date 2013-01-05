@@ -7,7 +7,9 @@
 //
 // Matti Kariluoma (matti.kariluoma@gmail.com) Nov 2009
 
-//compile with gcc this.c -lglut -ljpeg
+// compile with:
+// gcc lftextures.c -o lftextures -lglut -ljpeg -lGLU 
+
 
 #define PROGRAM_TITLE "Simple Light Field Manipulator"
 

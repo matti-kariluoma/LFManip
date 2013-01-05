@@ -7,9 +7,10 @@
 //
 // Matti Kariluoma <matti.kariluoma@gmail.com> Jan 2010
 
-//32-bit compile with gcc lfmanip.c -o lfmanip -lm -lglut -ljpeg -lpthread -lcv -lhighgui -I/usr/include/opencv
-//64-bit compile with gcc lfmanip.c -o lfmanip -lm -lglut -ljpeg -lpthread -lcv -lhighgui -I/usr/include/opencv -Dx64
-
+// 32-bit compile with: 
+// gcc lfmanip.c -o lfmanip -lm -lglut -ljpeg -lpthread -I/usr/include/opencv/ -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_features2d -lGLU -D x64
+// 64-bit compile with:
+// gcc ... -D x64
 #define PROGRAM_TITLE "Simple Light Field Manipulator"
 
 #include <stdio.h>
