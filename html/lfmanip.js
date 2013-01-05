@@ -60,17 +60,13 @@ var lfmanip = {
 	start: function()
 		{
 			var unloadedImages = new Array();
-			for (var i=0; i<lfmanip.filenames.length; i++)
+			for (i=0; i<lfmanip.filenames.length; i++)
 			{
 				var image = new Image();
+				// wait for the images to load before continuing
+				image.onload = lfmanip.handleImageLoad(image, i);
 				image.src = lfmanip.filenames[i];
 				unloadedImages.push(image);
-			}
-			
-			for (i=0; i<unloadedImages.length; i++)
-			{
-				// wait for the images to load before continuing
-				unloadedImages[i].onload = lfmanip.handleImageLoad(unloadedImages[i], i);
 			}
 			
 			// handleImageLoad() will eventually call loop()
@@ -97,12 +93,20 @@ var lfmanip = {
 			
 			var canUpdate = function()
 			{
-				lfmanip.render();
-				requestAnimFrame(canUpdate);
+				if (lfmanip.started)
+				{
+					lfmanip.render();
+					requestAnimFrame(canUpdate);
+				}
 			}
 			
 			// begin the loop
 			canUpdate();
+		},
+	
+	stop: function()
+		{
+			lfmanip.started = false;
 		},
 	
 	images: new Array(),

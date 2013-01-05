@@ -17,13 +17,14 @@
 	<script src="jquery.mousewheel.min.js"></script>
 	
 	<script>
+		// global state for the renderer
 		var canContext = $('#theCanvas')[0].getContext('2d');
-		
 		var offset = {
 				x: 0,
 				y: 0,
 				magnitude: 10,
-			} 
+			}
+			
 		var canvasRenderer = function()
 		{	
 			var canWidth = $('#theCanvas').width();
@@ -34,11 +35,20 @@
 					y: canHeight/2
 				};
       
-			canContext.clearRect(0, 0, canWidth, canHeight);
+      canContext.clearRect(0, 0, canWidth, canHeight);
+      
+      var offscreen_buffer = document.createElement('canvas');
+      var offContext = offscreen_buffer.getContext('2d');
+      
+      var img = lfmanip.getImage(0);
+      
+      offscreen_buffer.width = img.width;
+      offscreen_buffer.height = img.height;
 			
-			var img = lfmanip.getImage(0);
+			offContext.drawImage(img, 0, 0);
 			
-			canContext.drawImage(img, center.x - img.width/2 + offset.x, center.y - img.height/2 + offset.y);
+			
+			canContext.drawImage(offscreen_buffer, center.x - img.width/2 + offset.x, center.y - img.height/2 + offset.y);
 			
 			canContext.fillStyle = "black";
 			canContext.font = "bold 16px Arial";
@@ -81,7 +91,6 @@
 		
 		var canvasClick = function(event)
 		{
-			alert("click!");
 			return false;
 		}
 		
