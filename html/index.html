@@ -22,6 +22,7 @@
 		var offset = {
 				x: 0,
 				y: 0,
+				a: 0,
 				magnitude: 10,
 			}
 			
@@ -39,27 +40,30 @@
       
       var offscreen_buffer = document.createElement('canvas');
       var offContext = offscreen_buffer.getContext('2d');
-      
-      var img = lfmanip.getImage(0);
-      
-      offscreen_buffer.width = img.width;
-      offscreen_buffer.height = img.height;
-			offContext.drawImage(img, 0, 0);
-			var imgData = offContext.getImageData(0, 0, img.width, img.height);
-			for(var i=0; i<img.height; i++)
-			{
-				for(var j=0; j<img.width; j++)
+      offset.a = 192/lfmanip.numImages();
+      for (var n=0; n<lfmanip.numImages(); n++)
+      {
+				var img = lfmanip.getImage(n);
+				
+				offscreen_buffer.width = img.width;
+				offscreen_buffer.height = img.height;
+				offContext.drawImage(img, 0, 0);
+				var imgData = offContext.getImageData(0, 0, img.width, img.height);
+				for(var i=0; i<img.height; i++)
 				{
-					//var r = imgData.data[((i*(img.width*4)) + (j*4))];
-					//var g = imgData.data[((i*(img.width*4)) + (j*4)) + 1];
-					//var b = imgData.data[((i*(img.width*4)) + (j*4)) + 2];
-					//var a = imgData.data[((i*(img.width*4)) + (j*4)) + 3];
-					imgData.data[((i*(img.width*4)) + (j*4) + 3)] = 127; // a = 0.5
+					for(var j=0; j<img.width; j++)
+					{
+						//var r = imgData.data[((i*(img.width*4)) + (j*4))];
+						//var g = imgData.data[((i*(img.width*4)) + (j*4)) + 1];
+						//var b = imgData.data[((i*(img.width*4)) + (j*4)) + 2];
+						//var a = imgData.data[((i*(img.width*4)) + (j*4)) + 3];
+						imgData.data[((i*(img.width*4)) + (j*4) + 3)] = 255 - n*offset.a;
+					}
 				}
+				offContext.putImageData(imgData, 0, 0);
+				
+				canContext.drawImage(offscreen_buffer, center.x - img.width/2 + n*offset.x, center.y - img.height/2 + n*offset.y);
 			}
-			offContext.putImageData(imgData, 0, 0);
-			
-			canContext.drawImage(offscreen_buffer, center.x - img.width/2 + offset.x, center.y - img.height/2 + offset.y);
 			
 			canContext.fillStyle = "black";
 			canContext.font = "bold 16px Arial";

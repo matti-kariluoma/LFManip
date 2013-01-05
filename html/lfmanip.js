@@ -150,5 +150,14 @@ var lfmanip = {
 			return img;
 		},
 	
+	numImages: function()
+		{
+			var num = 0
+			if (lfmanip.images && lfmanip.images.length)
+			{
+				num = lfmanip.images.length
+			}
+			return num;
+		},
 	
 };
