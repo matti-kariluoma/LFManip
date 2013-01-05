@@ -6,6 +6,10 @@ var lfmanip = {
 	
 	filenames: new Array(),
 	
+	dx: new Array(),
+	
+	dy: new Array(),
+	
 	render: function(){},
 	
 	canvas: $('canvas'), // defaults to all canvases.
@@ -17,10 +21,28 @@ var lfmanip = {
 	init: function(config)
 		{
 			lfmanip.filenames = config.filenames;
+			lfmanip.dx = config.dx;
+			lfmanip.dy = config.dy;
 			lfmanip.render = config.render;
 			lfmanip.canvas = config.canvas;
 			lfmanip.wheel = config.wheel;
 			lfmanip.click = config.click;
+			
+			// check that dx.length == dy.length == filenames.length
+			if (lfmanip.filenames.length != lfmanip.dx.length || lfmanip.dx.length != lfmanip.dy.length)
+			{
+				for (i=0; i<lfmanip.filenames.length; i++)
+				{
+					if (!lfmanip.dx[i])
+					{
+						lfmanip.dx.push(0.0);
+					}
+					if (!lfmanip.dy[i])
+					{
+						lfmanip.dy.push(0.0);
+					}
+				}
+			}
 			
 			// set listener to mousewheel event
 			lfmanip.canvas.mousewheel(lfmanip.wheel);
@@ -66,6 +88,8 @@ var lfmanip = {
 				// wait for the images to load before continuing
 				image.onload = lfmanip.handleImageLoad(image, i);
 				image.src = lfmanip.filenames[i];
+				image.dx = lfmanip.dx[i];
+				image.dy = lfmanip.dy[i];
 				unloadedImages.push(image);
 			}
 			
