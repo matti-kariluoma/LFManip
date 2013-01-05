@@ -13,67 +13,12 @@
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script>
-		var resizeCanvas = function()
-		{
-			//$('#theCanvas').height($(document).height());
-			$('#theCanvas').width($(document).width());
-		}
-		
-		// resize the canvas now
-		resizeCanvas();
-		
-		// resize the canvas as browser resizes
-		$(
-			function()
-			{
-				$(window).resize(
-					function()
-					{
-						resizeCanvas();
-					}
-				);
-			}
-		);
-	</script>
-	
-	
-	
-	<script>
-		var canStart = function(renderFn)
-		{
-			// cross-browser selector from http://stackoverflow.com/questions/5864073/game-loop-requestanimframe-javascript-canvas
-			var requestAnimFrame = (
-				// define this selector function, then immediately call it
-				function() 
-				{
-					return window.requestAnimationFrame
-						|| window.webkitRequestAnimationFrame
-						|| window.mozRequestAnimationFrame
-						|| window.oRequestAnimationFrame
-						|| window.msRequestAnimationFrame
-						|| function(callback, element) 
-							{
-								window.setTimeout(callback, 1000/60);
-							};
-				}
-			)();
-			
-			var canUpdate = function()
-			{
-				renderFn();
-				requestAnimFrame(canUpdate);
-			}
-			
-			// begin the loop
-			canUpdate();
-		}
-	</script>
+	<script src="lfmanip.js"></script>
 	
 	<script>
 		var canContext = $('#theCanvas')[0].getContext('2d');
-		
-		var canRender = function()
+
+		var canvasRenderer = function()
 		{	
 			var canWidth = $('#theCanvas').width();
 			var canHeight = $('#theCanvas').height();
@@ -86,7 +31,9 @@
 		}
 		
 		// start the animation loop
-		canStart(canRender);
+		var config = {};
+		lfmanip.init(config);
+		lfmanip.start(canvasRenderer);
 	</script>
 </body>
 </html>
