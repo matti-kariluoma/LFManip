@@ -14,10 +14,16 @@
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script src="lfmanip.js"></script>
+	<script src="jquery.mousewheel.min.js"></script>
 	
 	<script>
 		var canContext = $('#theCanvas')[0].getContext('2d');
-
+		
+		var offset = {
+				x: 0,
+				y: 0,
+				magnitude: 10,
+			} 
 		var canvasRenderer = function()
 		{	
 			var canWidth = $('#theCanvas').width();
@@ -32,12 +38,51 @@
 			
 			var img = lfmanip.getImage(0);
 			
-			canContext.drawImage(img, center.x - img.width/2, center.y - img.height/2);
+			canContext.drawImage(img, center.x - img.width/2 + offset.x, center.y - img.height/2 + offset.y);
 			
 			canContext.fillStyle = "black";
 			canContext.font = "bold 16px Arial";
 			var canText = canWidth+"x"+canHeight;
 			canContext.fillText(canText, 0, 20);
+		}
+		
+		var canvasMousewheel = function(event, delta, dx, dy)
+		{
+      
+			if (delta > 0) // scroll up
+			{
+				
+			}
+			else if (delta < 0) // scroll down
+			{
+				
+			}
+			
+			if (dx > 0) // scroll east
+			{
+				offset.x = offset.x + offset.magnitude;
+			}
+			else if (dx < 0) // scroll west
+			{
+				offset.x = offset.x - offset.magnitude;
+			}
+			
+			if (dy > 0) // scroll north
+			{
+				offset.y = offset.y + offset.magnitude;
+			}
+			else if (dy < 0) // scroll south
+			{
+				offset.y = offset.y - offset.magnitude;
+			}
+			
+			return false; // prevent default
+		}
+		
+		var canvasClick = function(event)
+		{
+			alert("click!");
+			return false;
 		}
 		
 		var config = {
@@ -52,6 +97,9 @@
 						'file:///home/matti/Desktop/Shot1/CW.08_MINI0056.JPG'
 					],
 				render: canvasRenderer,
+				canvas: $('#theCanvas'),
+				wheel: canvasMousewheel,
+				click: canvasClick,	
 			};
 		lfmanip.init(config);
 		lfmanip.start();

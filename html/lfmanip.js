@@ -8,11 +8,26 @@ var lfmanip = {
 	
 	render: function(){},
 	
+	canvas: $('canvas'), // defaults to all canvases.
+	
+	wheel: function(){},
+	
+	click: function(){},
+	
 	init: function(config)
 		{
 			lfmanip.filenames = config.filenames;
-			
 			lfmanip.render = config.render;
+			lfmanip.canvas = config.canvas;
+			lfmanip.wheel = config.wheel;
+			lfmanip.click = config.click;
+			
+			// set listener to mousewheel event
+			lfmanip.canvas.mousewheel(lfmanip.wheel);
+			
+			// set listener to click event
+			lfmanip.canvas.click(lfmanip.click);
+			
 			// resize the canvas now
 			lfmanip.resizeCanvas();
 
