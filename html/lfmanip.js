@@ -131,6 +131,7 @@ var lfmanip = {
 	stop: function()
 		{
 			lfmanip.started = false;
+			lfmanip.images = new Array();
 		},
 	
 	images: new Array(),

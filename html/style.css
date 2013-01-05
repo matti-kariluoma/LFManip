@@ -9,3 +9,10 @@ canvas#theCanvas
 	height: 100%;
 	width: 100%;
 }
+
+#loadImages
+{
+	position: absolute;
+	left: 10px;
+	top: 40px;
+}

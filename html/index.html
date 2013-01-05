@@ -12,6 +12,8 @@
 		</canvas>
 	</div>
 	
+	<!--<input type="file" id="loadImages" multiple>-->
+		
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script src="lfmanip.js"></script>
 	<script src="jquery.mousewheel.min.js"></script>
@@ -121,7 +123,39 @@
 			};
 		lfmanip.init(config);
 		lfmanip.start();
-
+		
+		var loadOwnImages = function(event)
+		{
+			lfmanip.stop();
+			offset.x = 0;
+			offset.y = 0;
+			
+			var filenames = new Array();
+			for (i = 0; i<this.files.length; i++) 
+			{
+				var file = this.files[i];
+				filenames.push(file.value);
+			}
+			console.log(filenames.join())
+			var config = {
+					filenames: filenames,
+					dx: [
+							0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+						],
+					dy: [
+							0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+						],
+					render: canvasRenderer,
+					canvas: $('#theCanvas'),
+					wheel: canvasMousewheel,
+					click: canvasClick,	
+				};
+			lfmanip.init(config);
+			lfmanip.start();
+		}
+		
+		$('#loadImages').change(loadOwnImages)
+		
 	</script>
 </body>
 </html>
