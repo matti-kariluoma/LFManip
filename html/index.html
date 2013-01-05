@@ -1,7 +1,21 @@
 <html>
 <head>
+	<title>LFManip</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
 </head>
 
 <body>
+	<div id="container">
+		<canvas id="theCanvas" width="620" height="420">
+			<p>Your browser doesn't support canvas, or javascript is disabled!</p>
+		</canvas>
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script>
+		var canContext = $('#theCanvas')[0].getContext('2d');
+		var canWidth = $('#theCanvas').attr('width');
+		var canHeight = $('#theCanvas').attr('height');
+	</script>
 </body>
 </html>
