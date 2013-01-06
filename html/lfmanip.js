@@ -28,6 +28,9 @@ var lfmanip = {
 			lfmanip.wheel = config.wheel;
 			lfmanip.click = config.click;
 			
+			// create empty slots
+			lfmanip.images.length = lfmanip.filenames.length;
+			
 			// check that dx.length == dy.length == filenames.length
 			if (lfmanip.filenames.length != lfmanip.dx.length || lfmanip.dx.length != lfmanip.dy.length)
 			{
@@ -78,6 +81,8 @@ var lfmanip = {
 		},
 	
 	started: false,
+	
+	loaded: 0,
 	
 	start: function()
 		{
@@ -131,6 +136,7 @@ var lfmanip = {
 	stop: function()
 		{
 			lfmanip.started = false;
+			lfmanip.loaded = 0;
 			lfmanip.images = new Array();
 		},
 	
@@ -142,7 +148,8 @@ var lfmanip = {
 			return function()
 			{
 				lfmanip.registerImage(image, index);
-				if (!lfmanip.started)
+				lfmanip.loaded++;
+				if (lfmanip.loaded == lfmanip.images.length && !lfmanip.started)
 				{
 					lfmanip.started = true;
 					lfmanip.loop();
@@ -152,7 +159,8 @@ var lfmanip = {
 	
 	registerImage: function(img, index)
 		{
-			lfmanip.images.splice(index, 0, img)
+			lfmanip.images[index] = img
+			console.log('lfmanip: registered #'+index+" "+img.src);
 		},
 		
 	getImage: function(index)
@@ -167,7 +175,8 @@ var lfmanip = {
 			{
 				img = lfmanip.images[0];
 			}
-			else
+			
+			if (!img) // still crashes if the image isn't loaded yet...
 			{
 				img = new Image();
 			}
