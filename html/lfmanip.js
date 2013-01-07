@@ -24,7 +24,7 @@ var lfmanip = {
 			lfmanip.dx = config.dx;
 			lfmanip.dy = config.dy;
 			lfmanip.render = config.render;
-			lfmanip.canvas = config.canvas;
+			lfmanip.canvas = config.canvas; // set before calling resizeCanvas()
 			lfmanip.wheel = config.wheel;
 			lfmanip.click = config.click;
 			
@@ -72,12 +72,11 @@ var lfmanip = {
 	
 	resizeCanvas: function()
 		{
-			var canvas = $('#theCanvas');
-			var width = canvas[0].offsetWidth;
-			var height = canvas[0].offsetHeight;
+			var width = lfmanip.canvas[0].offsetWidth;
+			var height = lfmanip.canvas[0].offsetHeight;
 			
-			canvas.attr('width', width);
-			canvas.attr('height', height);
+			lfmanip.canvas.attr('width', width);
+			lfmanip.canvas.attr('height', height);
 		},
 	
 	started: false,
