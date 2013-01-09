@@ -33,35 +33,35 @@ import com.mattikariluoma.lfmanip.GLSurfaceView;
 
 public class LFManip extends Activity
 {
-    private GLSurfaceView mGLView;
+	private GLSurfaceView mGLView;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) 
-    {
-        super.onCreate(savedInstanceState);
-        
-        // create a GLSurfaceView, set it as the ContentView
-        mGLView = new GLSurfaceView(this);
-        setContentView(mGLView);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) 
+	{
+		super.onCreate(savedInstanceState);
 
-    @Override
-    protected void onPause() 
-    {
-        super.onPause();
-        // deallocate large textures
-        
-        // pause rendering
-        mGLView.onPause();
-    }
+		// create a GLSurfaceView, set it as the ContentView
+		mGLView = new GLSurfaceView(this);
+		setContentView(mGLView);
+	}
 
-    @Override
-    protected void onResume() 
-    {
-        super.onResume();
-        // reallocate any textures
-        
-        // resume rendering
-        mGLView.onResume();
-    }
+	@Override
+	protected void onPause() 
+	{
+		super.onPause();
+		// deallocate large textures
+
+		// pause rendering
+		mGLView.onPause();
+	}
+
+	@Override
+	protected void onResume() 
+	{
+		super.onResume();
+		// reallocate any textures
+
+		// resume rendering
+		mGLView.onResume();
+	}
 }
