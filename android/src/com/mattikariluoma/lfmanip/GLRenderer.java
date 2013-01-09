@@ -56,9 +56,15 @@ public class GLRenderer implements GLSurfaceView.Renderer
 	@Override
 	public void onSurfaceCreated(GL10 unused, EGLConfig config)
 	{
+		// report supported extensions
+		if (BuildConfig.DEBUG)
+		{
+			Log.d(TAG, unused.glGetString(GL10.GL_EXTENSIONS));
+		}
+
 		// Set the background frame color
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
+		
 		mTriangle = new Triangle();
 		mSquare   = new Square();
 	}
