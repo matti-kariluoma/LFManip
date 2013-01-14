@@ -4,4 +4,5 @@ c/
 html/
 	Fourth version of lfmanip, written in html+canvas
 
-
+android/
+	Fifth version, for android+OpenGLES
