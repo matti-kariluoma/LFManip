@@ -41,7 +41,7 @@ public class LFManip extends Activity
 		super.onCreate(savedInstanceState);
 
 		// create a GLSurfaceView, set it as the ContentView
-		mGLView = new GLSurfaceView(this);
+		this.mGLView = new GLSurfaceView(this);
 		setContentView(mGLView);
 	}
 
@@ -52,7 +52,7 @@ public class LFManip extends Activity
 		// deallocate large textures
 
 		// pause rendering
-		mGLView.onPause();
+		this.mGLView.onPause();
 	}
 
 	@Override
@@ -62,6 +62,6 @@ public class LFManip extends Activity
 		// reallocate any textures
 
 		// resume rendering
-		mGLView.onResume();
+		this.mGLView.onResume();
 	}
 }

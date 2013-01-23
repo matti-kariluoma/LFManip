@@ -109,7 +109,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
 		// in the onDrawFrame() method
 		Matrix.frustumM(mProjMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
 	}
-
+	
+	@Override
 	public static int loadShader(int type, String shaderCode)
 	{
 		// create a vertex shader type (GLES20.GL_VERTEX_SHADER)
@@ -213,7 +214,8 @@ class Triangle
 		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
 		GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
 	}
-
+	
+	@Override
 	public void draw(float[] mvpMatrix)
 	{
 		// Add program to OpenGL environment
@@ -290,8 +292,19 @@ class Square
 	private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
 	// Set color with red, green, blue and alpha (opacity) values
-	float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
-
+	float color[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	
+	private final FloatBuffer textureBuffer;
+	static float textureCoords[] = 
+	{
+		0.0f, 1.0f,		// top left
+		0.0f, 0.0f,		// bottom left
+		1.0f, 1.0f,		// top right
+		1.0f, 0.0f		// bottom right
+	}
+	
+	private int[] textures = new int[1];
+	
 	public Square()
 	{
 		// initialize vertex byte buffer for shape coordinates
@@ -301,7 +314,14 @@ class Square
 		vertexBuffer = bb.asFloatBuffer();
 		vertexBuffer.put(squareCoords);
 		vertexBuffer.position(0);
-
+		
+		// reuse byte buffer for texture coordinates
+		bb = ByteBuffer.allocateDirect(textureCoords.length * 4);
+		bb.order(ByteOrder.nativeOrder());
+		textureBuffer = bb.asFloatBuffer();
+		textureBuffer.put(textureCoords);
+		textureBuffer.position(0);
+		
 		// initialize byte buffer for the draw list
 		// (# of coordinate values * 2 bytes per short)
 		ByteBuffer dlb = ByteBuffer.allocateDirect(drawOrder.length * 2);
@@ -325,7 +345,30 @@ class Square
 		// create OpenGL program executables
 		GLES20.glLinkProgram(mProgram);
 	}
+	
+	public void loadGLTexture(GL10 gl, Context context)
+	{
+		// loading texture
+		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
+				R.drawable.ONE);
 
+		// generate one texture pointer
+		GLES20.glGenTextures(1, this.textures, 0);
+		// ...and bind it to our array
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, this.textures[0]);
+		
+		// create nearest filtered texture
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+		
+		// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
+		GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+                              
+		// Clean up
+		bitmap.recycle();
+	}
+
+	@Override
 	public void draw(float[] mvpMatrix)
 	{
 		// Add program to OpenGL environment
@@ -354,7 +397,12 @@ class Square
 		// Apply the projection and view transformation
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
 		GLRenderer.checkGlError("glUniformMatrix4fv");
-
+		
+		// bind previously generated texture
+		//GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, this.textures[0]);
+		//
+		// http://code.google.com/p/gdc2011-android-opengl/wiki/TalkTranscript
+		
 		// Draw the square
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, drawOrder.length,
 													GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
